@@ -1,0 +1,9 @@
+family_id,student_name,grade,subject_needed,availability,status,requested_date,notes
+F001,Jasmine Ortiz,4,reading,"Tue/Thu 4-5pm",matched,2025-09-05,"matched with M001"
+F002,Deshawn Carter,7,math,"Mon/Wed 3:30-4:30pm",waiting,2025-09-18,"needs tutor with algebra comfort"
+F003,Mei Lin,2,reading,"Fri 4-5pm",waiting,2025-09-22,""
+F004,Isabella Cruz,9,algebra_2,"Tue 5-6pm",matched,2025-08-30,"matched with M004"
+F005,Tyler Brooks,6,math,"Wed 4-5pm",waiting,2025-10-01,"sibling of F002, prefers same day"
+F006,Aisha Mohammed,3,reading,"Thu 3:30-4:30pm",waiting,2025-10-05,""
+F007,Noah Bennett,8,science,"Mon 4-5pm",matched,2025-09-02,"matched with M002"
+F008,Camila Reyes,5,math,"Tue/Thu 3:30-4:30pm",waiting,2025-10-12,"new sign-up, no response yet"

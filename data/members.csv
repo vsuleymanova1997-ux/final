@@ -1,0 +1,16 @@
+member_id,name,email,class_year,role,status,background_check_status,background_check_expires,hours_logged_ytd,join_date
+M001,Ava Chen,ava.chen@yale.edu,2027,tutor,active,cleared,2026-08-01,34,2024-09-10
+M002,Diego Ramirez,diego.ramirez@yale.edu,2026,tutor,active,cleared,2026-01-15,61,2023-09-12
+M003,Priya Nair,priya.nair@yale.edu,2028,tutor,active,pending,,2,2025-09-08
+M004,Marcus Hill,marcus.hill@yale.edu,2027,tutor,active,expired,2025-10-01,47,2024-01-20
+M005,Sofia Lopez,sofia.lopez@yale.edu,2026,volunteer_coordinator,active,cleared,2026-05-20,88,2022-09-09
+M006,Ben Okafor,ben.okafor@yale.edu,2028,tutor,active,cleared,2026-09-01,5,2025-09-08
+M007,Hana Suzuki,hana.suzuki@yale.edu,2027,treasurer,active,cleared,2026-03-11,52,2023-09-11
+M008,Liam Foster,liam.foster@yale.edu,2026,tutor,inactive,expired,2024-12-01,19,2022-09-15
+M009,Grace Kim,grace.kim@yale.edu,2028,tutor,active,pending,,0,2025-09-20
+M010,Omar Siddiqui,omar.siddiqui@yale.edu,2027,director,active,cleared,2026-07-07,95,2023-09-09
+M011,Nora Petrov,nora.petrov@yale.edu,2029,tutor,active,cleared,2026-10-01,1,2025-10-02
+M012,Jayden Brooks,jayden.brooks@yale.edu,2026,tutor,active,expired,2025-09-15,40,2023-01-18
+M013,Elena Vasquez,elena.vasquez@yale.edu,2028,tutor,active,cleared,2026-06-01,8,2025-09-08
+M014,Tobi Adeyemi,tobi.adeyemi@yale.edu,2027,family_liaison,active,cleared,2026-04-12,70,2023-09-10
+M015,Caleb Wright,caleb.wright@yale.edu,2029,tutor,active,pending,,0,2025-10-10

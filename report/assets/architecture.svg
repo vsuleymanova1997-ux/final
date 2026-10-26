@@ -1,0 +1,75 @@
+<svg viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#15423a" />
+    </marker>
+  </defs>
+  <style>
+    .box { fill:#eef4f0; stroke:#15423a; stroke-width:1.5; rx:10; }
+    .boss { fill:#15423a; }
+    .label { font-size:14px; fill:#15423a; }
+    .boss-label { font-size:14px; fill:#fff; font-weight:600; }
+    .sub { font-size:11px; fill:#45554c; }
+    .edge { stroke:#15423a; stroke-width:1.5; fill:none; marker-end:url(#arrow); }
+    .defense { fill:#fff6e0; stroke:#c9a227; stroke-width:1.5; }
+    .deflabel { font-size:11px; fill:#6b5410; }
+  </style>
+
+  <!-- User / UI -->
+  <rect x="380" y="10" width="220" height="50" class="box"/>
+  <text x="490" y="30" text-anchor="middle" class="label" font-weight="600">E-board member</text>
+  <text x="490" y="46" text-anchor="middle" class="sub">chat UI (frontend/index.html)</text>
+
+  <path d="M490,60 L490,95" class="edge"/>
+
+  <!-- FastAPI -->
+  <rect x="380" y="95" width="220" height="45" class="box"/>
+  <text x="490" y="115" text-anchor="middle" class="label" font-weight="600">FastAPI /chat</text>
+  <text x="490" y="130" text-anchor="middle" class="sub">cache + usage limits + budget guard</text>
+
+  <path d="M490,140 L490,175" class="edge"/>
+
+  <!-- Boss -->
+  <rect x="370" y="175" width="240" height="55" rx="10" class="box boss"/>
+  <text x="490" y="198" text-anchor="middle" class="boss-label">Boss / front desk agent</text>
+  <text x="490" y="216" text-anchor="middle" class="sub" fill="#cfe3da">routes to one or more specialists</text>
+
+  <!-- 4 specialists -->
+  <path d="M430,230 C300,260 180,270 150,295" class="edge"/>
+  <path d="M470,230 C420,260 380,270 360,295" class="edge"/>
+  <path d="M510,230 C560,260 600,270 620,295" class="edge"/>
+  <path d="M550,230 C680,260 800,270 830,295" class="edge"/>
+
+  <rect x="40" y="295" width="220" height="55" class="box"/>
+  <text x="150" y="317" text-anchor="middle" class="label" font-weight="600">Treasurer agent</text>
+  <text x="150" y="333" text-anchor="middle" class="sub">get_budget, review_reimbursement</text>
+
+  <rect x="270" y="295" width="200" height="55" class="box"/>
+  <text x="370" y="317" text-anchor="middle" class="label" font-weight="600">Volunteer Coordinator</text>
+  <text x="370" y="333" text-anchor="middle" class="sub">list_members, background_check_flags</text>
+
+  <rect x="500" y="295" width="200" height="55" class="box"/>
+  <text x="600" y="317" text-anchor="middle" class="label" font-weight="600">Family Liaison</text>
+  <text x="600" y="333" text-anchor="middle" class="sub">get_tutee_queue</text>
+
+  <rect x="730" y="295" width="200" height="55" class="box"/>
+  <text x="830" y="317" text-anchor="middle" class="label" font-weight="600">FAQ agent</text>
+  <text x="830" y="333" text-anchor="middle" class="sub">read_handbook</text>
+
+  <!-- Defense pipeline under Treasurer -->
+  <path d="M150,350 L150,385" class="edge"/>
+  <rect x="20" y="385" width="260" height="150" rx="10" class="defense"/>
+  <text x="150" y="405" text-anchor="middle" class="deflabel" font-weight="700">Reimbursement defense pipeline</text>
+
+  <rect x="35" y="415" width="230" height="35" rx="6" fill="#fff" stroke="#c9a227"/>
+  <text x="150" y="437" text-anchor="middle" class="deflabel">1. DESIGN: strip embedded</text>
+  <text x="150" y="448" text-anchor="middle" class="deflabel" display="none"></text>
+
+  <rect x="35" y="458" width="230" height="35" rx="6" fill="#fff" stroke="#c9a227"/>
+  <text x="150" y="480" text-anchor="middle" class="deflabel">2. QUARANTINE: reader agent</text>
+
+  <rect x="35" y="500" width="230" height="30" rx="6" fill="#fff" stroke="#c9a227"/>
+  <text x="150" y="519" text-anchor="middle" class="deflabel" font-weight="700">3. CODE: decide_reimbursement()</text>
+
+  <text x="150" y="553" text-anchor="middle" class="sub" font-style="italic">no LLM ever makes the approve/reject call</text>
+</svg>
