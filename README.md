@@ -118,8 +118,10 @@ different name, rename it to one of the two above.
 ```
 
 Open http://localhost:8000 — the page has a few example questions to click, or
-type your own. Every turn is logged to `output/audit_trail.json` (tool calls +
-final answer) and cached responses live in `output/response_cache.json`.
+type your own. Every answer shows its own real cost/token count right under it
+(e.g. `$0.000264 · 1974 in / 134 out tokens`, or `served from cache · $0.00`).
+Every turn is logged to `output/audit_trail.json` (tool calls + final answer)
+and cached responses live in `output/response_cache.json`.
 
 ## Try these
 

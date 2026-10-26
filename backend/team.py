@@ -52,7 +52,10 @@ class Team:
         }
         self.boss = build_boss_agent(model, specialists)
 
-    async def answer(self, message: str, use_cache: bool = True) -> str:
+    async def answer(self, message: str, use_cache: bool = True) -> dict:
+        """Returns {"reply", "cost_usd", "input_tokens", "output_tokens", "cache_hit"} —
+        the UI surfaces the cost fields directly so a user can see what each answer
+        actually cost, not just trust a number in a report."""
         # SAFETY: reject absurdly long input before it ever reaches the model —
         # cheap to check, closes off one obvious cost-flooding vector.
         if len(message) > MAX_MESSAGE_CHARS:
@@ -72,7 +75,7 @@ class Team:
                     AuditEntry(agent="boss", user_message=message, final_answer=cached, tool_calls=[])
                 )
                 usage_log.log_usage(message, _EmptyUsage(), cache_hit=True)
-                return cached
+                return {"reply": cached, "cost_usd": 0.0, "input_tokens": 0, "output_tokens": 0, "cache_hit": True}
 
         try:
             # SAFETY: caps total model requests for this turn, so a malfunctioning
@@ -86,7 +89,7 @@ class Team:
                 f"human e-board member. ({exc})"
             )
             append_audit(AuditEntry(agent="boss", user_message=message, final_answer=reply, tool_calls=[]))
-            return reply
+            return {"reply": reply, "cost_usd": 0.0, "input_tokens": 0, "output_tokens": 0, "cache_hit": False}
 
         reply = result.output
         run_usage = result.usage
@@ -99,10 +102,16 @@ class Team:
                 tool_calls=build_tool_call_records(result.all_messages()),
             )
         )
-        usage_log.log_usage(message, run_usage)
+        logged = usage_log.log_usage(message, run_usage)
         if use_cache:
             cache.set(message, reply)
-        return reply
+        return {
+            "reply": reply,
+            "cost_usd": logged["cost_usd"],
+            "input_tokens": logged["input_tokens"],
+            "output_tokens": logged["output_tokens"],
+            "cache_hit": False,
+        }
 
 
 class _EmptyUsage:

@@ -91,8 +91,8 @@ a CSV roster, a CSV budget, a folder of reimbursement emails, a markdown handboo
 in a real org's actual files is the only change needed to hand this to a real e-board.</em></p>
 
 <h2>3. What is new here</h2>
-<p>I looked for three kinds of things that already address pieces of this: generic AI
-assistants, nonprofit/club management software, and expense-reporting tools.</p>
+<p>I checked four specific, named products a real e-board might actually reach for, plus the
+generic-AI-chatbot option, rather than only arguing against a category in the abstract.</p>
 <table>
   <tr><th>What exists</th><th>What it does</th><th>What it doesn't do</th></tr>
   <tr>
@@ -104,13 +104,33 @@ assistants, nonprofit/club management software, and expense-reporting tools.</p>
     "approve" a reimbursement in conversation with no connection to the actual ledger.</td>
   </tr>
   <tr>
-    <td>Club management platforms (e.g. generic "org management" SaaS, Google Forms +
-    Sheets combos many Yale orgs actually use)</td>
-    <td>Structured forms and spreadsheets for membership, events, and sometimes budgets.</td>
-    <td>No natural-language interface — someone still has to open the sheet, understand the
-    column layout, and apply the policy themselves. No defense against a malicious or
-    just-confusing reimbursement submission. Nothing proactively tells you "these 5 families
-    have waited too long" — you have to think to look.</td>
+    <td><a href="https://www.wildapricot.com" target="_blank">Wild Apricot</a> — membership
+    management aimed at clubs and small nonprofits</td>
+    <td>Membership database, event registration, online payments, a basic website
+    builder.</td>
+    <td>No reimbursement/expense workflow at all, and no natural-language interface — a
+    Capterra reviewer specifically flagged it as inflexible for anything outside its standard
+    membership/event flows. You still read a table and apply the policy yourself.</td>
+  </tr>
+  <tr>
+    <td><a href="https://givebutter.com" target="_blank">Givebutter</a> — fundraising +
+    membership platform, free core features</td>
+    <td>Donor/membership management and event ticketing with no platform fee (optional
+    donor tips cover it).</td>
+    <td>Built around taking money in (donations/dues), not paying it back out. No
+    reimbursement review, no policy grounding, no chat interface.</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.moneyminder.com" target="_blank">MoneyMinder</a> — nonprofit
+    accounting software with a dedicated reimbursement module</td>
+    <td>The closest existing match: digital reimbursement requests with multi-step
+    sign-off, built specifically because (their own blog) reimbursement approval
+    "consumes hours each month" for small-org treasurers.</td>
+    <td>It's a form-and-approval-queue tool, not a conversational one — a human still has to
+    open each request and manually check it against the org's own rules (which MoneyMinder
+    doesn't know). No defense against a submission that tries to talk the approver into
+    skipping a rule, because there's no AI in the loop to manipulate in the first place —
+    but also no AI doing any of the actual checking for you.</td>
   </tr>
   <tr>
     <td>Expense-reporting tools (Expensify-style)</td>
@@ -120,6 +140,12 @@ assistants, nonprofit/club management software, and expense-reporting tools.</p>
     background-check fees, family-event caps). Massive overkill to set up for a club.</td>
   </tr>
 </table>
+<p>The pattern across the three real named products: the industry has separately solved
+"membership/dues" (Wild Apricot, Givebutter) and "reimbursement paperwork" (MoneyMinder) as
+form-and-database problems. None of them put a conversational agent in front of the data,
+and — more specifically to this project's actual contribution — none of them have to think
+about an AI being socially engineered by a malicious submission, because none of them let an
+AI touch the approval decision at all.</p>
 <p><strong>What this project does differently:</strong> it is a single, narrow tool built
 around one specific e-board's actual handbook and actual data files, that (a) answers in
 plain language grounded in that handbook, not generic policy, (b) actually reads the live
@@ -235,7 +261,16 @@ of the two sample reimbursement requests that embeds a prompt-injection attempt:
 <h2>5. Tokenomics</h2>
 <p>All numbers below are measured from real runs against the live gpt-6-luna endpoint
 (logged automatically to <code>output/usage_log.json</code> by every chat turn — see
-<code>backend/usage.py</code>), not estimated.</p>
+<code>backend/usage.py</code>), not estimated. As of this revision the app also surfaces its
+own per-answer cost and token counts directly in the chat UI, so this isn't just a backend
+log a developer can see — the e-board member asking the question sees exactly what each
+answer cost, in real time.</p>
+<figure>
+  <img src="assets/05_cost_readout.jpg" alt="Screenshot of the chat UI showing a live cost/token readout under each answer"/>
+  <figcaption>Figure 4. The app's own in-UI cost readout: <code>$0.000264 · 1974 in / 134 out
+  tokens</code> shown directly under the answer, pulled from the same <code>RunUsage</code>
+  object logged to <code>output/usage_log.json</code>.</figcaption>
+</figure>
 <h3>5.1 Per-run cost</h3>
 <table>
   <tr><th>Metric</th><th>Measured value (avg of 6 distinct test questions)</th></tr>

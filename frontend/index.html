@@ -26,9 +26,18 @@
     padding: 10px 14px; border-radius: 12px; max-width: 75%; white-space: pre-wrap;
     line-height: 1.4; font-size: 14px;
   }
+  .bubble strong { font-weight: 700; }
+  .bubble code {
+    font-family: 'SFMono-Regular', Menlo, Consolas, monospace; font-size: 0.9em;
+    background: rgba(0,0,0,0.06); border-radius: 4px; padding: 1px 4px;
+  }
   .msg.user .bubble { background: #15423a; color: #fff; }
   .msg.assistant .bubble { background: #fff; border: 1px solid #ddd; }
   .msg.system .bubble { background: #fff6e0; border: 1px solid #e8d79a; font-style: italic; }
+  .cost-note {
+    font-size: 11px; color: #789384; margin-top: 6px; padding-top: 6px;
+    border-top: 1px dashed #e0e0e0;
+  }
   form {
     display: flex; gap: 8px; padding: 16px; max-width: 760px; margin: 0 auto; width: 100%;
     box-sizing: border-box; border-top: 1px solid #ddd; background: #fff;
@@ -84,13 +93,42 @@ for (const ex of EXAMPLES) {
   examplesEl.appendChild(b);
 }
 
-function addMessage(role, text) {
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Minimal, safe markdown: escape first, then only re-introduce <strong>/<code>/<br>/<li>
+// for the few constructs the agents actually produce (bold, inline code, newlines, "- " bullets).
+function renderMarkdown(text) {
+  const lines = escapeHtml(text).split('\n');
+  const html = lines.map(line => {
+    const bulletMatch = line.match(/^(\d+\.|-)\s+(.*)/);
+    const inner = line
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/`(.+?)`/g, '<code>$1</code>');
+    if (bulletMatch) {
+      return `<div style="padding-left:1.2em;text-indent:-1.2em;">${bulletMatch[1]} ${inner.replace(bulletMatch[1], '').trim()}</div>`;
+    }
+    return inner;
+  });
+  return html.join('<br>');
+}
+
+function addMessage(role, text, meta) {
   const row = document.createElement('div');
   row.className = `msg ${role}`;
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
-  bubble.textContent = text;
+  bubble.innerHTML = renderMarkdown(text);
   row.appendChild(bubble);
+  if (meta && role === 'assistant') {
+    const note = document.createElement('div');
+    note.className = 'cost-note';
+    note.textContent = meta.cache_hit
+      ? 'served from cache · $0.00'
+      : `$${meta.cost_usd.toFixed(6)} · ${meta.input_tokens} in / ${meta.output_tokens} out tokens`;
+    bubble.appendChild(note);
+  }
   chat.appendChild(row);
   chat.scrollTop = chat.scrollHeight;
 }
@@ -114,7 +152,10 @@ form.addEventListener('submit', async (e) => {
     const data = await res.json();
     sessionId = data.session_id;
     thinkingNode.remove();
-    addMessage('assistant', data.reply);
+    addMessage('assistant', data.reply, {
+      cost_usd: data.cost_usd, input_tokens: data.input_tokens,
+      output_tokens: data.output_tokens, cache_hit: data.cache_hit,
+    });
   } catch (err) {
     thinkingNode.remove();
     addMessage('system', `Error: ${err.message}`);

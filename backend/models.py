@@ -55,3 +55,7 @@ class ChatResponse(BaseModel):
     reply: str
     agent: str
     session_id: str
+    cost_usd: float = 0.0
+    input_tokens: int = 0
+    output_tokens: int = 0
+    cache_hit: bool = False

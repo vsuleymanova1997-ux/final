@@ -113,6 +113,44 @@ repo, model/budget rules, `.env` lookup rules). Work done against it:
   opens standalone when emailed, per the assignment's requirement. Paged
   through every slide via the browser to confirm rendering before finishing.
 
+## Post-grading self-review pass
+
+User asked for an honest self-grade against the course rubric (idea/novelty,
+app, report, slides). Graded it critically rather than generously — flagged
+that the core architecture closely follows HW5's "Campus Customs" multi-agent
+pattern (not a new idea), that the chat UI rendered literal `**bold**` instead
+of real markdown (a real bug), that tokenomics leaned on an assumed query
+volume with no in-app cost display, and that Impact had no real user — only a
+careful estimate. Estimated score: ~76.5/100, solidly Tier 2.
+
+User then asked to act on the fixable gaps:
+- **Markdown rendering bug**: fixed in `frontend/index.html` — a small
+  `renderMarkdown()` escapes HTML first, then re-introduces `<strong>`,
+  `<code>`, `<br>`, and list formatting for the specific patterns the agents
+  actually produce. Verified live: `**$489.75**` now renders as real bold.
+- **In-app cost/token display**: `ChatResponse` now carries `cost_usd`,
+  `input_tokens`, `output_tokens`, `cache_hit`; `Team.answer()` returns a dict
+  instead of a bare string so `main.py` can pass real usage data through;
+  the UI shows a small cost note under every assistant answer. This turns the
+  tokenomics section's evidence from "a log a developer could check" into
+  something the actual user sees on every answer — re-screenshotted and
+  referenced directly in `report/report.html` §5.
+- **Novelty section**: replaced a generic "club management SaaS" row with
+  three real, named, researched products (Wild Apricot, Givebutter,
+  MoneyMinder — found via live web search, not assumed), each with a specific
+  gap this project fills. MoneyMinder in particular is the closest real
+  competitor (an actual nonprofit reimbursement-approval tool) and is now
+  named explicitly as such, rather than glossing over it.
+- **Real-user evidence for Impact**: asked the user how they wanted to get
+  it (self-test, find an e-board friend, or skip). User chose to skip and
+  keep the honest "careful estimate, not a pilot" framing already in the
+  report — left Impact as-is rather than inventing evidence.
+- Regenerated `report/slides.html` from the build script with the refreshed
+  screenshots (now showing live cost readouts) and an updated Cost slide.
+- Verified all of the above live in the browser (re-ran the same 3-question
+  conversation, confirmed bold rendering + accurate cost figures matching
+  `output/usage_log.json`) before committing.
+
 ## Verification done in this session
 
 - Unit-tested `tools.py` CSV readers and `decisions.decide_reimbursement`
