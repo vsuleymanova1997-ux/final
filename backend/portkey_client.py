@@ -10,7 +10,11 @@ from pydantic_ai.models.openai import OpenAIChatModel
 from pydantic_ai.providers.openai import OpenAIProvider
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-load_dotenv(PROJECT_ROOT.parent / ".env", override=False)
+# override=True on both loads, in "furthest first" order, so these two .env files are
+# always authoritative over whatever happened to already be in the shell's environment
+# (e.g. an unrelated PORTKEY_API_KEY a grader's own shell profile exports) — the repo's
+# own .env is loaded last, so it still wins over the one in the folder above it.
+load_dotenv(PROJECT_ROOT.parent / ".env", override=True)
 load_dotenv(PROJECT_ROOT / ".env", override=True)
 
 PORTKEY_API_KEY = os.getenv("PORTKEY_API_KEY") or os.getenv("OPENAI_API_KEY")
